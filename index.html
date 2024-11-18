@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <title>gestion de panier</title>
+    </head>
+
+    <body>
+        
+        <main id="app">
+
+            <section class="items">
+              
+                <h4>Pick your items</h4>
+
+<!-- Afficher les produits -->
+
+                <div  
+                v-for="produit in products" 
+                :key="produit.name"
+                v-on:click="toggleSelection(produit)"
+                v-bind:class="[{selected:produit.isSelected},'product']"
+                >
+                    <div class="photo"  style="cursor: pointer;">
+                        <img v-bind:src="produit.image" id="image" v-bind:alt="produit.name">
+                    </div>
+                    <div  class="description">
+                        <span class="name">{{produit.name}}</span>
+                        <span class="price">{{produit.price}}</span>
+                        <div class="quantity-area" v-if="produit.isSelected">
+                            <button @click.stop="decremente(produit)" v-bind:disabled="isDisabled(produit)">-</button>
+                            <span class="quantity">{{produit.compteur}}</span>
+                            <button @click.stop="incremente(produit)">+</button> 
+                        </div>
+                    
+                    </div>
+                </div>
+
+                
+                
+<!-- afficher la section qui affiche la liste des produits au panier -->
+            
+            <section class="summary" v-if="check()">
+
+                <strong>Order Details</strong>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Afficher tous les produits actifs -->
+                        
+                        <!-- <tr v-for="item in products" :key="item.name">
+                            <template v-if="item.isSelected">
+                                <td>{{item.compteur}}x{{item.name}}</td>
+                                <td>10</td>
+                            </template>
+                        </tr> -->
+
+                        <tr v-for="item in filterproduct" :key="item.name">     
+                                <td>{{item.compteur}}x{{item.name}}</td>
+                                <td>{{totalProd(item)}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>Total</th>
+                            <th>{{totalPrice()}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+        
+            <div id="app">
+              
+            </div>
+            
+
+        </main>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="script.js"></script>
+    
+</body>
+
+</html>
